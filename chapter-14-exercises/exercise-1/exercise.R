@@ -2,29 +2,36 @@
 
 # Load the httr and jsonlite libraries for accessing data
 # You can also load `dplyr` if you wish to use it
-
+library(httr)
+library(jsonlite)
+library(dplyr)
 
 # Create a variable base_uri that stores the base URI (as a string) for the 
 # Github API (https://api.github.com)
-
+base_uri <- "https://api.github.com"
 
 # Under the "Repositories" category of the API documentation, find the endpoint 
 # that will list _repos in an organization_. Then create a variable named
 # `org_resource` that stores the endpoint for the `programming-for-data-science`
 # organization repos (this is the _path_ to the resource of interest).
-
+org_resource <- paste0("/users/", "info201", "/repos")
 
 # Send a GET request to this endpoint (the `base_uri` followed by the 
 # `org_resource` path). Print the response to show that your request worked. 
 # (The listed URI will also allow you to inspect the JSON in the browser easily).
-
+GET(paste0(base_uri,org_resource))
 
 # Extract the content of the response using the `content()` function, saving it
 # in a variable.
-
+response <- GET("http://ischool.uw.edu/")
+body <- content(response, "text")
 
 # Convert the content variable from a JSON string into a data frame.
-
+json <- '{"first_name": "Ada", "job": "Programmer", "pets":["rover", "flower"]}'
+ada <- fromJSON(json)
+response <- GET("https://api.github.com/users/info201/repos")
+body <- content(response, "text")
+repos <- fromJSON(body)
 
 # How many (public) repositories does the organization have?
 
@@ -33,15 +40,18 @@
 # Create a variable `search_endpoint` that stores the endpoint used to search 
 # for repositories. (Hint: look for a "Search" endpoint in the documentation).
 
-
 # Search queries require a query parameter (for what to search for). Create a 
 # `query_params` list variable that specifies an appropriate key and value for 
 # the search term (you can search for anything you want!)
-
+query_params <- list(q = "informatic")
+GET("https://www.google.com/search", query = query_params)
 
 # Send a GET request to the `search_endpoint`--including your params list as the
 # `query`. Print the response to show that your request worked.
-
+base_uri <- "https://api.github.com"
+resource <- "/search/repositories"
+query_params <- list(q = "dplyr")
+GET(paste0(base_uri, resource), query = query_params)
 
 # Extract the content of the response and convert it from a JSON string into a
 # data frame. 
